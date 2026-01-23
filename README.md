@@ -1,5 +1,5 @@
 # malykh-drb3-reader
-This is a simplified version of [DRBDBReader](https://github.com/MWisBest/DRBDBReader), written in Scala 3.
+This is a simplified version of [DRBDBReader](https://github.com/MWisBest/DRBDBReader), written in Scala 3 (2022-2026).
 
 Anton Malykh
 
