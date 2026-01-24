@@ -1,0 +1,1 @@
+@java -jar lib/malykh-drb3-reader.jar %*
