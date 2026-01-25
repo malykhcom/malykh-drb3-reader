@@ -5,4 +5,4 @@ Anton Malykh
 
 See also
 
-- [malykh-drb3-reader](https://malykh.blogspot.com/)
+- [malykh-drb3-reader](https://malykh.blogspot.com/2026/01/malykh-drb3-reader-github.html)
