@@ -9,21 +9,22 @@ import scala.util.Random
 
 object Info {
   def moduleIdForExample(database: Database): String = {
-    val modules = database.moduleTable.allModules().toArray
-    if (modules.isEmpty) {
-      "0x5d6"
+    val modules = database.moduleTable.allModulesIterator().toArray
+    val hexModuleString = if (modules.isEmpty) {
+      "5d6"
     }
     else {
-      s"0x${modules(Random.nextInt(modules.length)).id.toHexString}"
+      modules(Random.nextInt(modules.length)).id.toHexString
     }
+    Database.hexValue(hexModuleString)
   }
   private def printModule(database: Database, module: Module): Unit = {
     val name = database.string(module.nameId)
     val category = database.string(database.serviceCategoryTable.nameById(module.serviceCategoryId))
-    println(s"Module 0x${module.id.toHexString}: $name [$category]")
+    println(s"Module ${Database.hexValue(module.id.toHexString)}: $name [$category]")
   }
   def printAllModules(database: Database): Unit = {
-    for (m <- database.moduleTable.allModules()) {
+    for (m <- database.moduleTable.allModulesIterator()) {
       printModule(database, m)
     }
   }
@@ -32,14 +33,14 @@ object Info {
       case Some(module) =>
         printModule(database, module)
         println()
-        val txs = database.moduleTxTable.moduleTxsByIdOpt(moduleId).getOrElse(sys.error(s"Unknown module id: 0x${moduleId.toHexString}"))
+        val txs = database.moduleTxTable.moduleTxsByIdOpt(moduleId).getOrElse(sys.error(s"Unknown module id: ${Database.hexValue(moduleId.toHexString)}"))
         for (txId <- txs) {
           val tx = database.txTable.txById(txId)
           val name = database.string(tx.nameId)
           val serviceCategory = database.string(database.serviceCategoryTable.nameById(tx.serviceCategoryId))
           val data = database.dataTable.dataById(tx.dataId)
           val protocol = data.protocol.title
-          println(s"Tx 0x${txId.toHexString}: $name [$serviceCategory], $protocol: ${ByteHelper.toString(tx.bytes)}")
+          println(s"Tx ${Database.hexValue(txId.toHexString)}: $name [$serviceCategory], $protocol: ${ByteHelper.toString(tx.bytes)}")
           println(tx.converter.info(database))
         }
         true
@@ -48,7 +49,7 @@ object Info {
     }
   }
   def printAllTx(database: Database): Unit = {
-    for (m <- database.moduleTable.allModules()) {
+    for (m <- database.moduleTable.allModulesIterator()) {
       println()
       printTxForModule(database, m.id)
     }

@@ -1,5 +1,7 @@
 package com.malykh.drb3.database.value
 
+import com.malykh.drb3.database.Database
+
 import scala.annotation.switch
 
 opaque type Protocol = Int
@@ -17,7 +19,7 @@ object Protocol {
         case 155 => "KWP"
         case 159 => "Multimeter"
         case 160 => "J2190?"
-        case _ => s"UNKNOWN(0x${protocol.toHexString})"
+        case _ => s"UNKNOWN(${Database.hexValue(protocol.toHexString)})"
       }
     }
   }

@@ -1,6 +1,7 @@
 package com.malykh.drb3.database.table
 
 import com.malykh.drb3.bytes.ByteStream
+import com.malykh.drb3.database.Database
 import com.malykh.drb3.database.value.Location
 
 import java.nio.charset.StandardCharsets
@@ -29,7 +30,7 @@ final class TextTable(private val texts: Array[String] = new Array(2)) extends A
     val textNum = location.textNum
     val start = location.offset
 
-    def unknown() = "?0x" + location.toHexString + "?"
+    def unknown() = "?" + Database.hexValue(location.toHexString) + "?"
 
     if (textNum < texts.length) {
       val text = texts(textNum)

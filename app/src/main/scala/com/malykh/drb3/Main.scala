@@ -8,7 +8,6 @@ import scala.util.{Properties, Try}
 
 object Main {
   private val version = "2026-01-25"
-  private val prefix0x = "0x"
 
   private val commandNameBase = "malykh-drb3-reader"
   private val commandName = {
@@ -39,17 +38,12 @@ object Main {
     }
     else {
       val arg = args.head
-      val idOpt = if (arg.startsWith(prefix0x)) {
-        Try{Integer.parseInt(arg.substring(prefix0x.length), 16)}.toOption
-      }
-      else {
-        None
-      }
+      val idOpt = Database.parseHexValueOpt(arg)
       idOpt match {
         case Some(id) =>
           val res = Info.printTxForModule(database, ModuleId(id))
           if (!res) {
-            println(s"Unknown module id: 0x${id.toHexString}")
+            println(s"Unknown module id: ${Database.hexValue(id.toHexString)}")
             showHelp()
           }
         case _ if arg == "all" =>

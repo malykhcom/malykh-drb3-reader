@@ -1,5 +1,7 @@
 package com.malykh.drb3.database.value
 
+import com.malykh.drb3.database.Database
+
 import scala.annotation.switch
 
 opaque type Operator = Int
@@ -16,7 +18,7 @@ object Operator {
         case 0x3c => "LESS"
         case 0x3d => "EQUAL"
         case 0x3e => "GREATER"
-        case x => s"UNKNOWN(0x${operator.toHexString})"
+        case x => s"UNKNOWN(${Database.hexValue(operator.toHexString)})"
       }
     }
   }

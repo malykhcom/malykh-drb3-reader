@@ -7,7 +7,7 @@ import scala.collection.mutable
 
 final class ModuleTable(private val map: mutable.TreeMap[ModuleId, Module] = new mutable.TreeMap()) extends AnyVal {
   
-  inline def allModules(): Iterator[Module] = {
+  inline def allModulesIterator(): Iterator[Module] = {
     map.valuesIterator
   }
   

@@ -28,7 +28,7 @@ final class StateConverter(stateId: StateId, maskOperationIdOpt: Option[MaskOper
     for (maskOperationId <- maskOperationIdOpt) {
       val mask = database.maskOperationTable.maskOperationById(maskOperationId).mask
       if (mask != 0)
-        sb.append("Mask: 0x").append(mask.toHexString).append('\n')
+        sb.append("Mask: ").append(Database.hexValue(mask.toHexString)).append('\n')
     }
 
     locally {
@@ -38,7 +38,7 @@ final class StateConverter(stateId: StateId, maskOperationIdOpt: Option[MaskOper
 
     for (states <- database.stateTable.statesByIdOpt(stateId)) {
       for ((value, stringId) <- states) {
-        sb.append("0x").append(value.toHexString).append(": ").append(database.string(stringId)).append('\n')
+        sb.append(Database.hexValue(value.toHexString)).append(": ").append(database.string(stringId)).append('\n')
       }
     }
 
@@ -64,7 +64,7 @@ final class BinaryStateConverter(binaryStateId: BinaryStateId, maskOperationIdOp
 
     for (maskOperationId <- maskOperationIdOpt) {
       val mask = database.maskOperationTable.maskOperationById(maskOperationId)
-      sb.append("Mask: 0x").append(mask.mask.toHexString).append('\n')
+      sb.append("Mask: ").append(Database.hexValue(mask.mask.toHexString)).append('\n')
       sb.append("Operator: ").append(mask.operator.title).append('\n')
     }
 
@@ -148,7 +148,7 @@ object Converter {
         val stateId = StateId(dsId)
         new StateConverter(stateId, None)
       case _ =>
-        val info = s"Type: 0x${converterType.toHexString} (0x${dsId.toHexString}, 0x${cfId.toHexString})\n"
+        val info = s"Type: ${Database.hexValue(converterType.toHexString)} (${Database.hexValue(dsId.toHexString)}, ${Database.hexValue(cfId.toHexString)})\n"
         new UnknownConverter(info)
     }
   }

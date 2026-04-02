@@ -5,6 +5,7 @@ import com.malykh.drb3.database.table.*
 import com.malykh.drb3.database.value.StringId
 
 import java.nio.file.Path
+import scala.util.Try
 
 final class Database(val isStarScan: Boolean) {
   val moduleTable = new ModuleTable()
@@ -27,6 +28,18 @@ final class Database(val isStarScan: Boolean) {
 }
 
 object Database {
+  private inline def hexPrefix = "0x"
+  inline def hexValue(rawHexString: String): String = hexPrefix + rawHexString
+  def parseHexValueOpt(hexValue: String): Option[Int] = {
+    if (hexValue.startsWith(Database.hexPrefix)) {
+      Try {
+        Integer.parseInt(hexValue.substring(Database.hexPrefix.length), 16)
+      }.toOption
+    }
+    else {
+      None
+    }
+  }
   def fromFile(filePath: Path): Database = {
     DatabaseLoader.loadDatabase(filePath)
   }
